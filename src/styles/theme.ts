@@ -51,5 +51,6 @@ export const theme = extendTheme({
         borderRadius: '20px',
       },
     }),
-  }
+  },
+  config
 });

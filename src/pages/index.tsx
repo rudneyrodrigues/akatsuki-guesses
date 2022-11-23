@@ -5,6 +5,8 @@ import { type GetStaticProps, type NextPage } from "next";
 
 import { Header } from "../components/Header";
 import { Sidebar } from "../components/Sidebar";
+import { UserGuesses } from "../components/Guesses/UserGuesses";
+import { NewGuessModal } from "../components/Modal/NewGuessModal";
 
 type Team = {
   title: string;
@@ -53,11 +55,13 @@ const Home: NextPage<HomeProps> = ({ games }: HomeProps): JSX.Element => {
           maxW="container.xl"
           justify="space-between"
         >
-          <Text>Ola mundo</Text>
+          <UserGuesses />
 
           <Sidebar games={games} />
         </Flex>
       </Flex>
+
+      <NewGuessModal />
     </>
   )
 }

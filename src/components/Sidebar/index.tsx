@@ -44,9 +44,15 @@ export const Sidebar = ({ games }: SidebarProps): JSX.Element => {
 
   if (isDrawerSidebar) {
     return (
-      <Drawer isOpen={isOpen} placement="right" onClose={onClose} size="md">
+      <Drawer isOpen={isOpen} placement="left" onClose={onClose} size="md">
         <DrawerOverlay>
-          <DrawerContent bg="gray.800" p="4">
+          <DrawerContent
+            bg="gray.200"
+            p="4"
+            _dark={{
+              bg: 'gray.900',
+            }}
+          >
             <DrawerCloseButton mt="1.5rem" />
 
             <DrawerHeader>
@@ -59,7 +65,7 @@ export const Sidebar = ({ games }: SidebarProps): JSX.Element => {
                   width: '4px',
                 },
                 '&::-webkit-scrollbar-track': {
-                  backgroundColor: '#121214',
+                  backgroundColor: '#202024',
                 },
                 '&::-webkit-scrollbar-thumb': {
                   backgroundColor: '#00875F',
@@ -67,15 +73,17 @@ export const Sidebar = ({ games }: SidebarProps): JSX.Element => {
                 },
               }}
             >
-              { games.map(game => (
-                <Game
-                  key={game.id}
-                  id={game.id}
-                  date={new Date(game.date)}
-                  phase={game.phase}
-                  team={game.teams}
-                />
-              )) }
+              <VStack w="full" spacing="6">
+                { games.map(game => (
+                  <Game
+                    key={game.id}
+                    id={game.id}
+                    date={new Date(game.date)}
+                    phase={game.phase}
+                    team={game.teams}
+                  />
+                )) }
+              </VStack>
             </DrawerBody>
           </DrawerContent>
         </DrawerOverlay>
@@ -104,7 +112,7 @@ export const Sidebar = ({ games }: SidebarProps): JSX.Element => {
           width: '4px',
         },
         '&::-webkit-scrollbar-track': {
-          backgroundColor: '#121214',
+          backgroundColor: '#202024',
         },
         '&::-webkit-scrollbar-thumb': {
           backgroundColor: '#00875F',

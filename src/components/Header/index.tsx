@@ -18,8 +18,15 @@ export const Header = (): JSX.Element => {
 
   return (
     <Box
-      h="20"
+      h={{
+        base: "auto",
+        md: "20"
+      }}
       px="4"
+      py={{
+        base: "4",
+        md: "0"
+      }}
       top="0"
       position="sticky"
       bg="gray.200"
@@ -32,37 +39,31 @@ export const Header = (): JSX.Element => {
       }}
     >
       <Flex
-        h="20"
+        h={{
+          base: "auto",
+          md: "20"
+        }}
         w="full"
-        gap="2"
+        gap="4"
         mx="auto"
         align="center"
         maxW="container.lg"
         justify="space-between"
+        flexDir={{
+          base: "column",
+          md: "row"
+        }}
       >
-        <Image
-          src={colorMode === 'dark'
-            ? "/images/logo-dark.svg"
-            : "/images/logo-light.svg"
-          }
-          alt="Copa do Mundo 2022"
-          width={201}
-          height={31}
-        />
-
-        <HStack spacing="2">
-          { session ? (
-            <UserMenu />
-          ) : (
-            <Button
-              size="lg"
-              rounded="full"
-              leftIcon={<GoogleLogo size={24} />}
-              onClick={() => signIn('google')}
-            >
-              Entrar com o google
-            </Button>
-          ) }
+        <Flex w="full" align="center" justify="space-between" gap="4">
+          <Image
+            src={colorMode === 'dark'
+              ? "/images/logo-dark.svg"
+              : "/images/logo-light.svg"
+            }
+            alt="Copa do Mundo 2022"
+            width={201}
+            height={31}
+          />
 
           { isDrawerSidebar && (
             <IconButton
@@ -74,7 +75,24 @@ export const Header = (): JSX.Element => {
               onClick={onOpen}
             />
           ) }
-        </HStack>
+
+          { session && (
+            <Box ml="auto">
+              <UserMenu />
+            </Box>
+          ) }
+        </Flex>
+
+        { !session && (
+          <Button
+            size="lg"
+            rounded="full"
+            leftIcon={<GoogleLogo size={24} />}
+            onClick={() => signIn('google')}
+          >
+            Entrar com o google
+          </Button>
+        ) }
       </Flex>
     </Box>
   )
