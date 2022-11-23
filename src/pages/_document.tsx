@@ -1,9 +1,12 @@
+import { ColorModeScript } from '@chakra-ui/react';
 import Document, {
   Html,
   Head,
   Main,
   NextScript,
 } from 'next/document';
+
+import { theme } from '../styles/theme';
 
 export default class MyDocument extends Document {
   render() {
@@ -19,6 +22,7 @@ export default class MyDocument extends Document {
         <body id="root">
           <Main />
           <NextScript />
+          <ColorModeScript initialColorMode={theme.config.initialColorMode} />
         </body>
       </Html>
     )

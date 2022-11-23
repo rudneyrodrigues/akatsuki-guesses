@@ -1,9 +1,7 @@
 import Head from "next/head";
 import { GraphQLClient } from "graphql-request";
 import { type GetStaticProps, type NextPage } from "next";
-
-import { Header } from "../components/Header";
-import { BannerGame } from "../components/BannerGame";
+import { Flex, Text } from "@chakra-ui/react";
 
 type Team = {
   title: string;
@@ -41,23 +39,9 @@ const Home: NextPage<HomeProps> = ({ games }: HomeProps): JSX.Element => {
         <title>Bolão da Akatsuki - Copa do Mundo 2022</title>
       </Head>
 
-      <div className="flex flex-col min-h-screen">
-        <Header />
-
-        <main className="flex-1 px-4">
-          <div className="w-full max-w-screen-lg mx-auto mt-8 grid grid-cols-3 gap-2">
-            { games.map(game => (
-              <BannerGame
-                key={game.id}
-                id={game.id}
-                date={game.date}
-                time={game.time}
-                teams={game.teams}
-              />
-            )) }
-          </div>
-        </main>
-      </div>
+      <Flex flexDir="column" minH="100vh">
+        <Text>Ola mundo</Text>
+      </Flex>
     </>
   )
 }
