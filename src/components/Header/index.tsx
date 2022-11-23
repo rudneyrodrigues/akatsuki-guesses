@@ -20,9 +20,12 @@ export const Header = (): JSX.Element => {
     <Box
       h="20"
       px="4"
+      top="0"
+      position="sticky"
       bg="gray.200"
       borderBottom="1px solid"
       borderBottomColor="gray.300"
+      zIndex="sticky"
       _dark={{
         bg: 'gray.900',
         borderBottomColor: 'gray.800'

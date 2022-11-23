@@ -29,7 +29,7 @@ export const Game = (props: GameProps): JSX.Element => {
 
   const isDrawerSidebar = useBreakpointValue({
     base: true,
-    xl: false,
+    sm: false,
   });
 
   return (

@@ -39,7 +39,17 @@ export const theme = extendTheme({
       'body': {
         bg: props.colorMode === 'dark' ? "gray.950": "gray.100",
         text: props.colorMode === 'dark' ? "gray.200" : "gray.800",
-      }
+      },
+      'body::-webkit-scrollbar': {
+        width: '4px',
+      },
+      'body::-webkit-scrollbar-track': {
+        backgroundColor: '#121214',
+      },
+      'body::-webkit-scrollbar-thumb': {
+        backgroundColor: '#00875F',
+        borderRadius: '20px',
+      },
     }),
   }
 });

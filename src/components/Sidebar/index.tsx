@@ -53,7 +53,20 @@ export const Sidebar = ({ games }: SidebarProps): JSX.Element => {
               Cronograma de jogos
             </DrawerHeader>
 
-            <DrawerBody>
+            <DrawerBody
+              css={{
+                '&::-webkit-scrollbar': {
+                  width: '4px',
+                },
+                '&::-webkit-scrollbar-track': {
+                  backgroundColor: '#121214',
+                },
+                '&::-webkit-scrollbar-thumb': {
+                  backgroundColor: '#00875F',
+                  borderRadius: '20px',
+                },
+              }}
+            >
               { games.map(game => (
                 <Game
                   key={game.id}
@@ -74,9 +87,11 @@ export const Sidebar = ({ games }: SidebarProps): JSX.Element => {
     <Box
       p="8"
       w="400px"
-      maxH="full"
+      h="full"
+      maxH="calc(100vh - 80px)"
       bg="gray.200"
       position="sticky"
+      top="20"
       borderX="1px solid"
       borderColor="gray.300"
       overflowY="auto"
