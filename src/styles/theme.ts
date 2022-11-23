@@ -17,6 +17,7 @@ export const theme = extendTheme({
       700: "#29292E",
       800: "#202024",
       900: "#121214",
+      950: "#09090A"
     }
   },
   fonts: {
@@ -26,7 +27,7 @@ export const theme = extendTheme({
   styles: {
     global: (props: any) => ({
       'body': {
-        bg: props.colorMode === 'dark' ? "gray.900": "gray.100",
+        bg: props.colorMode === 'dark' ? "gray.950": "gray.100",
         text: props.colorMode === 'dark' ? "gray.200" : "gray.800",
       }
     }),

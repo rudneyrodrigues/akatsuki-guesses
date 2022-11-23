@@ -1,7 +1,9 @@
 import Head from "next/head";
+import { Flex, Text } from "@chakra-ui/react";
 import { GraphQLClient } from "graphql-request";
 import { type GetStaticProps, type NextPage } from "next";
-import { Flex, Text } from "@chakra-ui/react";
+
+import { Header } from "../components/Header";
 
 type Team = {
   title: string;
@@ -40,6 +42,8 @@ const Home: NextPage<HomeProps> = ({ games }: HomeProps): JSX.Element => {
       </Head>
 
       <Flex flexDir="column" minH="100vh">
+        <Header />
+
         <Text>Ola mundo</Text>
       </Flex>
     </>
@@ -58,9 +62,7 @@ export const getStaticProps: GetStaticProps = async () => {
         date
         teams {
           title
-          flag {
-            url
-          }
+          flagUrl
         }
         guesses {
           id
