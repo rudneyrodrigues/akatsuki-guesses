@@ -3,6 +3,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { SessionProvider } from 'next-auth/react';
 
 import { theme } from '../styles/theme';
+import { SidebarDrawProvider } from '../contexts/SidebarDrawerContext';
 
 export default function App({
   Component,
@@ -14,7 +15,9 @@ export default function App({
   return (
     <SessionProvider session={session}>
       <ChakraProvider theme={theme}>
-        <Component {...pageProps} />
+        <SidebarDrawProvider>
+          <Component {...pageProps} />
+        </SidebarDrawProvider>
       </ChakraProvider>
     </SessionProvider>
   )

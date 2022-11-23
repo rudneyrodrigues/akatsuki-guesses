@@ -4,12 +4,11 @@ import { GraphQLClient } from "graphql-request";
 import { type GetStaticProps, type NextPage } from "next";
 
 import { Header } from "../components/Header";
+import { Sidebar } from "../components/Sidebar";
 
 type Team = {
   title: string;
-  flag: {
-    url: string;
-  }
+  flagUrl: string;
 }
 
 type Guess = {
@@ -25,9 +24,11 @@ type Guess = {
 type Game = {
   id: string;
   date: string;
-  time: string;
   guesses: Guess[];
   teams: Team[];
+  phase: {
+    title: string;
+  };
 }
 
 interface HomeProps {
@@ -44,7 +45,18 @@ const Home: NextPage<HomeProps> = ({ games }: HomeProps): JSX.Element => {
       <Flex flexDir="column" minH="100vh">
         <Header />
 
-        <Text>Ola mundo</Text>
+        <Flex
+          w="full"
+          flex={1}
+          as="main"
+          mx="auto"
+          maxW="container.xl"
+          justify="space-between"
+        >
+          <Text>Ola mundo</Text>
+
+          <Sidebar games={games} />
+        </Flex>
       </Flex>
     </>
   )
@@ -73,26 +85,16 @@ export const getStaticProps: GetStaticProps = async () => {
             email
           }
         }
+        phase {
+          title
+        }
       }
     }
   `)
 
-  const formattedGames = response.games.map((game: Game) => ({
-    ...game,
-    date: new Date(game.date).toLocaleDateString('pt-BR', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
-    }),
-    time: new Date(game.date).toLocaleTimeString('pt-BR', {
-      hour: 'numeric',
-      minute: '2-digit',
-    })
-  }))
-
   return {
     props: {
-      games: formattedGames,
+      games: response.games,
     },
     revalidate: 3600, // one hour
   }

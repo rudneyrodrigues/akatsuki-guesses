@@ -1,21 +1,30 @@
 import Image from 'next/image';
-import { useSession, signIn, signOut } from 'next-auth/react';
-import { GoogleLogo, Sun, Moon, SignOut, PencilSimpleLine } from 'phosphor-react';
-import { Box, Flex, Button, Menu, MenuButton, Avatar, MenuList, MenuItem, useColorMode, MenuDivider } from '@chakra-ui/react';
+import { GoogleLogo, List } from 'phosphor-react';
+import { useSession, signIn } from 'next-auth/react';
+import { Box, Flex, Button, useColorMode, HStack, useBreakpointValue, IconButton, Icon } from '@chakra-ui/react';
+
+import { UserMenu } from '../Menu/UserMenu';
+import { useSidebarDrawer } from '../../contexts/SidebarDrawerContext';
 
 export const Header = (): JSX.Element => {
+  const { colorMode } = useColorMode();
   const { data: session } = useSession();
-  const { colorMode, toggleColorMode } = useColorMode();
+  const { onOpen } = useSidebarDrawer();
+
+  const isDrawerSidebar = useBreakpointValue({
+    base: true,
+    xl: false,
+  });
 
   return (
     <Box
       h="20"
       px="4"
-      bg="gray.100"
+      bg="gray.200"
       borderBottom="1px solid"
-      borderBottomColor="gray.200"
+      borderBottomColor="gray.300"
       _dark={{
-        bg: 'gray.950',
+        bg: 'gray.900',
         borderBottomColor: 'gray.800'
       }}
     >
@@ -29,63 +38,40 @@ export const Header = (): JSX.Element => {
         justify="space-between"
       >
         <Image
-          src={colorMode === 'dark' ? "/images/logo-dark.svg" : "/images/logo-light.svg"}
+          src={colorMode === 'dark'
+            ? "/images/logo-dark.svg"
+            : "/images/logo-light.svg"
+          }
           alt="Copa do Mundo 2022"
           width={201}
           height={31}
         />
 
-        { session ? (
-          <Menu>
-            <MenuButton
+        <HStack spacing="2">
+          { session ? (
+            <UserMenu />
+          ) : (
+            <Button
+              size="lg"
               rounded="full"
-              border="2px solid"
-              borderColor={colorMode === 'dark'? 'gray.700' : 'gray.200'}
+              leftIcon={<GoogleLogo size={24} />}
+              onClick={() => signIn('google')}
             >
-              <Avatar
-                size="md"
-                name={String(session.user?.name)}
-                src={String(session.user?.image)}
-              />
-            </MenuButton>
+              Entrar com o google
+            </Button>
+          ) }
 
-            <MenuList>
-              <MenuItem icon={<PencilSimpleLine size={20} />}>
-                Meus palpites
-              </MenuItem>
-              { colorMode === 'dark' ? (
-                <MenuItem icon={<Sun size={20} />} onClick={toggleColorMode}>
-                  Tema claro
-                </MenuItem>
-              ) : (
-                <MenuItem icon={<Moon size={20} />} onClick={toggleColorMode}>
-                  Tema escuro
-                </MenuItem>
-              ) }
-
-              <MenuDivider />
-
-              <MenuItem
-                onClick={() => signOut()}
-                icon={<SignOut size={20} />}
-                _hover={{
-                  bg: 'red.500'
-                }}
-              >
-                Sair
-              </MenuItem>
-            </MenuList>
-          </Menu>
-        ) : (
-          <Button
-            size="lg"
-            rounded="full"
-            leftIcon={<GoogleLogo size={24} />}
-            onClick={() => signIn('google')}
-          >
-            Entrar com o google
-          </Button>
-        ) }
+          { isDrawerSidebar && (
+            <IconButton
+              aria-label="Lista de Jogos"
+              variant="ghost"
+              icon={
+                <Icon as={List} w="6" h="6" weight="bold" />
+              }
+              onClick={onOpen}
+            />
+          ) }
+        </HStack>
       </Flex>
     </Box>
   )
