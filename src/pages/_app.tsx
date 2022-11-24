@@ -1,4 +1,5 @@
 import { type AppProps } from 'next/app';
+import NextNProgress from 'nextjs-progressbar';
 import { ChakraProvider } from '@chakra-ui/react';
 import { SessionProvider } from 'next-auth/react';
 
@@ -16,6 +17,7 @@ export default function App({
     <SessionProvider session={session}>
       <ChakraProvider theme={theme}>
         <SidebarDrawProvider>
+          <NextNProgress height={2} color="#F7DD43" />
           <Component {...pageProps} />
         </SidebarDrawProvider>
       </ChakraProvider>

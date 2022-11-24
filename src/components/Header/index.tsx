@@ -54,27 +54,38 @@ export const Header = (): JSX.Element => {
           md: "row"
         }}
       >
-        <Flex w="full" align="center" justify="space-between" gap="4">
-          <Image
-            src={colorMode === 'dark'
-              ? "/images/logo-dark.svg"
-              : "/images/logo-light.svg"
-            }
-            alt="Copa do Mundo 2022"
-            width={201}
-            height={31}
-          />
-
-          { isDrawerSidebar && (
-            <IconButton
-              aria-label="Lista de Jogos"
-              variant="ghost"
-              icon={
-                <Icon as={List} w="6" h="6" weight="bold" />
+        <Flex w={{
+          base: "full",
+          md: "auto"
+        }} flex={1} align="center" justify="space-between" gap="4">
+          <Flex w={{
+            base: "full",
+            md: "auto"
+          }} align="center" gap="4" justify={{
+            base: "space-between",
+            md: "center"
+          }}>
+            <Image
+              src={colorMode === 'dark'
+                ? "/images/logo-dark.svg"
+                : "/images/logo-light.svg"
               }
-              onClick={onOpen}
+              alt="Copa do Mundo 2022"
+              width={201}
+              height={31}
             />
-          ) }
+
+            { isDrawerSidebar && (
+              <IconButton
+                aria-label="Lista de Jogos"
+                variant="ghost"
+                icon={
+                  <Icon as={List} w="6" h="6" weight="bold" />
+                }
+                onClick={onOpen}
+              />
+            ) }
+          </Flex>
 
           { session && (
             <Box ml="auto">

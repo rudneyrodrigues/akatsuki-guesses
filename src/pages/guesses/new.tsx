@@ -1,25 +1,15 @@
 import Head from "next/head";
 import { Flex } from "@chakra-ui/react";
 import { GraphQLClient } from "graphql-request";
-import { type GetStaticProps, type NextPage } from "next";
+import { GetStaticProps, NextPage } from "next";
 
-import { Header } from "../components/Header";
-import { Sidebar } from "../components/Sidebar";
-import { UserGuesses } from "../components/Guesses/UserGuesses";
+import { Header } from "../../components/Header";
+import { Sidebar } from "../../components/Sidebar";
+import { NewGuess } from "../../components/Guesses/NewGuess";
 
 type Team = {
   title: string;
   flagUrl: string;
-}
-
-type Guess = {
-  id: string;
-  firstTeamPoints: number;
-  secondTeamPoints: number;
-  participant: {
-    name: string;
-    email: string;
-  };
 }
 
 type Game = {
@@ -31,15 +21,17 @@ type Game = {
   };
 }
 
-interface HomeProps {
+interface NewGuessPageProps {
   games: Game[];
 }
 
-const Home: NextPage<HomeProps> = ({ games }: HomeProps): JSX.Element => {
+const NewGuessPage: NextPage<NewGuessPageProps> = ({
+  games
+}: NewGuessPageProps): JSX.Element => {
   return (
     <>
       <Head>
-        <title>Bolão da Akatsuki - Copa do Mundo 2022</title>
+        <title>Novo palpite - Copa do Mundo 2022</title>
       </Head>
 
       <Flex flexDir="column" minH="100vh">
@@ -53,7 +45,7 @@ const Home: NextPage<HomeProps> = ({ games }: HomeProps): JSX.Element => {
           maxW="container.xl"
           justify="space-between"
         >
-          <UserGuesses />
+          <NewGuess games={games} />
 
           <Sidebar games={games} />
         </Flex>
@@ -62,7 +54,7 @@ const Home: NextPage<HomeProps> = ({ games }: HomeProps): JSX.Element => {
   )
 }
 
-export default Home;
+export default NewGuessPage;
 
 export const getStaticProps: GetStaticProps = async () => {
   const graphql = new GraphQLClient(String(process.env.HYGRAPH_CONTENT_API));

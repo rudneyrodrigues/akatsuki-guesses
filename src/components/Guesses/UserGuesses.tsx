@@ -2,7 +2,7 @@ import { Plus } from 'phosphor-react';
 import { useSession } from 'next-auth/react';
 import { Button, Divider, Flex, Heading, Highlight, Icon, Text, VStack } from '@chakra-ui/react';
 
-import { NewGuessModal } from '../Modal/NewGuessModal';
+import Link from 'next/link';
 
 export const UserGuesses = (): JSX.Element => {
   const { data: session } = useSession();
@@ -47,15 +47,17 @@ export const UserGuesses = (): JSX.Element => {
           Meus palpites
         </Heading>
 
-        <Button
-          size="sm"
-          variant="ghost"
-          leftIcon={
-            <Icon as={Plus} />
-          }
-        >
-          Novo palpite
-        </Button>
+        <Link href="/guesses/new" passHref>
+          <Button
+            size="sm"
+            variant="ghost"
+            leftIcon={
+              <Icon as={Plus} />
+            }
+          >
+            Novo palpite
+          </Button>
+        </Link>
       </Flex>
 
       <Divider
@@ -90,8 +92,9 @@ export const UserGuesses = (): JSX.Element => {
             styles={{
               bg: 'gray.200',
               color: 'gray.900',
-              p: '2',
-              rounded:'md',
+              py: '1',
+              px: '2',
+              rounded:'sm',
               fontSize: 'sm',
               fontWeight: 'bold',
               _dark: {
