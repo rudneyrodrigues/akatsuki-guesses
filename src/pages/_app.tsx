@@ -5,6 +5,7 @@ import { SessionProvider } from 'next-auth/react';
 
 import { theme } from '../styles/theme';
 import { SidebarDrawProvider } from '../contexts/SidebarDrawerContext';
+import { Header } from '../components/Header';
 
 export default function App({
   Component,
@@ -18,6 +19,7 @@ export default function App({
       <ChakraProvider theme={theme}>
         <SidebarDrawProvider>
           <NextNProgress height={2} color="#F7DD43" />
+          <Header />
           <Component {...pageProps} />
         </SidebarDrawProvider>
       </ChakraProvider>

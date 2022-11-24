@@ -1,11 +1,30 @@
 import { Plus } from 'phosphor-react';
+import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { Button, Divider, Flex, Heading, Highlight, Icon, Text, VStack } from '@chakra-ui/react';
-
+import { Button, Divider, Flex, Heading, Highlight, Icon, Spinner, Table, TableCaption, TableContainer, Tbody, Td, Text, Th, Thead, Tr, VStack } from '@chakra-ui/react';
+import { api } from '../../services/api';
 import Link from 'next/link';
+import useSWR from 'swr';
+import { useGuessesByEmail } from '../../lib/useGuessesByEmail';
+
+type Teams = {
+  title: string;
+  flagUrl: string;
+}
+
+type UserGuessesData = {
+  id: string;
+  firstTeamPoints: number;
+  secondTeamPoints: number;
+  game: {
+    id: string;
+    teams: Teams[];
+  }
+}
 
 export const UserGuesses = (): JSX.Element => {
   const { data: session } = useSession();
+  const { data, isError, isLoading } = useGuessesByEmail(session?.user.email);
 
   if (!session) {
     return (
@@ -35,8 +54,35 @@ export const UserGuesses = (): JSX.Element => {
     )
   }
 
+  if (isError) {
+    return (
+      <Flex
+        minH="calc(100vh - 5rem)"
+        align="center"
+        justify="center"
+        flexDir="column"
+        gap="4"
+      >
+        <Heading>
+          Erro ao carregar dados do servidor
+        </Heading>
+        <Text color="gray.700" _dark={{ color: 'gray.300' }}>
+          Entre em contato com o Administrado para verificar o problema
+        </Text>
+      </Flex>
+    )
+  }
+
+  if (isLoading) {
+    return (
+      <Flex flex={1} minH="calc(100vh - 5rem)" align="center" justify="center">
+        <Spinner size="xl" color="yellow" />
+      </Flex>
+    )
+  }
+
   return (
-    <VStack flex={1} spacing="8" p="8">
+    <VStack flex={1} w="full" spacing="8" p="8">
       <Flex
         gap="4"
         w="full"
@@ -47,7 +93,7 @@ export const UserGuesses = (): JSX.Element => {
           Meus palpites
         </Heading>
 
-        <Link href="/guesses/new" passHref>
+        <Link href="/guesses/new">
           <Button
             size="sm"
             variant="ghost"
@@ -68,45 +114,50 @@ export const UserGuesses = (): JSX.Element => {
         }}
       />
 
-      <VStack spacing="4">
-        <Text
-          color="gray.900"
-          fontWeight="bold"
-          fontSize="xl"
-          _dark={{
-            color: 'gray.100'
-          }}
-        >
-          Você ainda não possui nenhum palpite cadastrado
+      { data.guesses.length === 0 ? (
+        <Text color="gray.700" _dark={{ color: 'gray.300' }}>
+          Você ainda não registrou nenhum palpite
         </Text>
+      ) : (
+        <TableContainer w="full">
+          <Table variant="simple">
+            <TableCaption>
+              Meus palpites na copa
+            </TableCaption>
 
-        <Text
-          color="gray.700"
-          fontSize="sm"
-          _dark={{
-            color: 'gray.300'
-          }}
-        >
-          <Highlight
-            query="+ Novo palpite"
-            styles={{
-              bg: 'gray.200',
-              color: 'gray.900',
-              py: '1',
-              px: '2',
-              rounded:'sm',
-              fontSize: 'sm',
-              fontWeight: 'bold',
-              _dark: {
-                bg: 'gray.700',
-                color: 'gray.100'
-              }
-            }}
-          >
-            Clique no botão + Novo palpite para adicionar um palpite em algum jogo.
-          </Highlight>
-        </Text>
-      </VStack>
+            <Thead>
+              <Tr>
+                <Th>Time 1</Th>
+                <Th isNumeric>Gols</Th>
+                <Th>Time 2</Th>
+                <Th isNumeric>Gols</Th>
+                {/* <Th>Data</Th> */}
+              </Tr>
+            </Thead>
+
+            <Tbody>
+              { data.guesses.map(guess => {
+                return (
+                  <Tr key={guess.id}>
+                    <Td>
+                      {guess.game.teams[0].title}
+                    </Td>
+                    <Td isNumeric>
+                      {guess.firstTeamPoints}
+                    </Td>
+                    <Td>
+                      {guess.game.teams[1].title}
+                    </Td>
+                    <Td isNumeric>
+                      {guess.secondTeamPoints}
+                    </Td>
+                  </Tr>
+                )
+              }) }
+            </Tbody>
+          </Table>
+        </TableContainer>
+      ) }
     </VStack>
   )
 }

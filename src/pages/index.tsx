@@ -1,50 +1,50 @@
+import useSWR from 'swr';
 import Head from "next/head";
-import { Flex } from "@chakra-ui/react";
-import { GraphQLClient } from "graphql-request";
 import { type GetStaticProps, type NextPage } from "next";
+import { Flex, Heading, Spinner, Text } from "@chakra-ui/react";
 
-import { Header } from "../components/Header";
 import { Sidebar } from "../components/Sidebar";
 import { UserGuesses } from "../components/Guesses/UserGuesses";
 
-type Team = {
-  title: string;
-  flagUrl: string;
-}
+const Home: NextPage = (): JSX.Element => {
+  const fetcher = (...args: any) => fetch(args).then(res => res.json())
 
-type Guess = {
-  id: string;
-  firstTeamPoints: number;
-  secondTeamPoints: number;
-  participant: {
-    name: string;
-    email: string;
-  };
-}
+  const { data, error } = useSWR("/api/games", fetcher);
 
-type Game = {
-  id: string;
-  date: string;
-  teams: Team[];
-  phase: {
-    title: string;
-  };
-}
+  if (error) {
+    return (
+      <Flex
+        minH="calc(100vh - 5rem)"
+        align="center"
+        justify="center"
+        flexDir="column"
+        gap="4"
+      >
+        <Heading>
+          Erro ao carregar dados do servidor
+        </Heading>
+        <Text color="gray.700" _dark={{ color: 'gray.300' }}>
+          Entre em contato com o Administrado para verificar o problema
+        </Text>
+      </Flex>
+    )
+  }
 
-interface HomeProps {
-  games: Game[];
-}
+  if (!data) {
+    return (
+      <Flex minH="calc(100vh - 5rem)" align="center" justify="center">
+        <Spinner size="xl" color="yellow" />
+      </Flex>
+    )
+  }
 
-const Home: NextPage<HomeProps> = ({ games }: HomeProps): JSX.Element => {
   return (
     <>
       <Head>
         <title>Bolão da Akatsuki - Copa do Mundo 2022</title>
       </Head>
 
-      <Flex flexDir="column" minH="100vh">
-        <Header />
-
+      <Flex flexDir="column" minH="calc(100vh - 5rem)">
         <Flex
           w="full"
           flex={1}
@@ -55,7 +55,7 @@ const Home: NextPage<HomeProps> = ({ games }: HomeProps): JSX.Element => {
         >
           <UserGuesses />
 
-          <Sidebar games={games} />
+          <Sidebar games={data?.games} />
         </Flex>
       </Flex>
     </>
@@ -65,28 +65,8 @@ const Home: NextPage<HomeProps> = ({ games }: HomeProps): JSX.Element => {
 export default Home;
 
 export const getStaticProps: GetStaticProps = async () => {
-  const graphql = new GraphQLClient(String(process.env.HYGRAPH_CONTENT_API));
-
-  const response = await graphql.request(`
-    query GetAllGames {
-      games(orderBy: date_ASC) {
-        id
-        date
-        teams {
-          title
-          flagUrl
-        }
-        phase {
-          title
-        }
-      }
-    }
-  `)
-
   return {
-    props: {
-      games: response.games,
-    },
-    revalidate: 3600, // one hour
+    props: {},
+    // revalidate: 3600, // one hour
   }
 }

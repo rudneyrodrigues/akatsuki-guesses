@@ -17,7 +17,7 @@ export default NextAuth({
   ],
   callbacks: {
     async signIn({ user }) {
-      const { name, email } = user;
+      const { name, email, id } = user;
 
       const graphql = new GraphQLClient(String(process.env.HYGRAPH_CONTENT_API));
 
@@ -36,16 +36,17 @@ export default NextAuth({
       }
 
       await graphql.request(`
-        mutation CreateParticipant($name: String!, $email:String!) {
+        mutation CreateParticipant($name: String!, $email:String!, $googleId:String!) {
           createParticipant(
-            data: {name: $name, email: $email}
+            data: {name: $name, email: $email, googleId: $googleId}
           ) {
             id
           }
         }
       `, {
         name,
-        email
+        email,
+        googleId: id
       }).then(async (res: CreateParticipantResponse) => {
         await graphql.request(`
           mutation PublishParticipant($id: ID!) {

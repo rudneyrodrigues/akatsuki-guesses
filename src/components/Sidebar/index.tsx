@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import {
   Box,
   Divider,
@@ -34,7 +35,7 @@ interface SidebarProps {
   games: Games[];
 }
 
-export const Sidebar = ({ games }: SidebarProps): JSX.Element => {
+const SidebarComponent = ({ games }: SidebarProps): JSX.Element => {
   const { onClose, isOpen } = useSidebarDrawer();
 
   const isDrawerSidebar = useBreakpointValue({
@@ -148,3 +149,7 @@ export const Sidebar = ({ games }: SidebarProps): JSX.Element => {
     </Box>
   )
 }
+
+export const Sidebar = memo(SidebarComponent, (prevProps, nextProps) => {
+  return Object.is(prevProps.games, nextProps.games);
+});

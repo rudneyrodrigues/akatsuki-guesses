@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { memo } from 'react';
 import { ptBR } from 'date-fns/locale';
 import { useRouter } from 'next/router';
 import { isPast, format } from 'date-fns';
@@ -19,7 +20,7 @@ type GameProps = {
   };
 }
 
-export const Game = (props: GameProps): JSX.Element => {
+const GameComponent = (props: GameProps): JSX.Element => {
   const { asPath } = useRouter();
 
   const isGuessAvailable = isPast(props.date);
@@ -45,7 +46,7 @@ export const Game = (props: GameProps): JSX.Element => {
 
       <ChakraLink
         as={Link}
-        href=""
+        href="/"
         p="1rem"
         borderRadius="md"
         border="1px solid"
@@ -129,3 +130,7 @@ export const Game = (props: GameProps): JSX.Element => {
     </Flex>
   )
 }
+
+export const Game = memo(GameComponent, (prevProps, nextProps) => {
+  return Object.is(prevProps.id, nextProps.id);
+})

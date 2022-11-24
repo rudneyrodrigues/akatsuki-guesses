@@ -2,5 +2,5 @@
 
 - [x] Criar componente de UserOptions
 - [x] Criar sidebar com lista de jogos
-- [ ] Criar página de novos palpites
+- [x] Criar página de novos palpites
 - [ ] Criar rota api para registro de palpites
