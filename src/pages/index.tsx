@@ -44,19 +44,10 @@ const Home: NextPage = (): JSX.Element => {
         <title>Bolão da Akatsuki - Copa do Mundo 2022</title>
       </Head>
 
-      <Flex flexDir="column" minH="calc(100vh - 5rem)">
-        <Flex
-          w="full"
-          flex={1}
-          as="main"
-          mx="auto"
-          maxW="container.xl"
-          justify="space-between"
-        >
-          <UserGuesses />
+      <Flex as="main" maxW="container.xl" mx="auto" minH="calc(100vh - 5rem)">
+        <UserGuesses />
 
-          <Sidebar games={data?.games} />
-        </Flex>
+        <Sidebar games={data?.games} />
       </Flex>
     </>
   )
@@ -67,6 +58,5 @@ export default Home;
 export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {},
-    // revalidate: 3600, // one hour
   }
 }

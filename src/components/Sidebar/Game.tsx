@@ -46,7 +46,7 @@ const GameComponent = (props: GameProps): JSX.Element => {
 
       <ChakraLink
         as={Link}
-        href="/"
+        href={`/game/${props.id}`}
         p="1rem"
         borderRadius="md"
         border="1px solid"

@@ -44,19 +44,10 @@ const NewGuessPage = () => {
         <title>Novo palpite - Copa do Mundo 2022</title>
       </Head>
 
-      <Flex flexDir="column" minH="calc(100vh - 5rem)">
-        <Flex
-          w="full"
-          flex={1}
-          as="main"
-          mx="auto"
-          maxW="container.xl"
-          justify="space-between"
-        >
-          <NewGuess games={data?.games} />
+      <Flex as="main" maxW="container.xl" mx="auto" minH="calc(100vh - 5rem)">
+        <NewGuess games={data?.games} />
 
-          <Sidebar games={data?.games} />
-        </Flex>
+        <Sidebar games={data?.games} />
       </Flex>
     </>
   )
@@ -67,6 +58,5 @@ export default NewGuessPage;
 export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {},
-    revalidate: 3600, // one hour
   }
 }

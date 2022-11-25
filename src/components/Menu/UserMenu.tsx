@@ -1,5 +1,5 @@
 import { signOut, useSession } from "next-auth/react";
-import { Moon, PencilSimpleLine, SignOut, Sun } from "phosphor-react";
+import { Moon, PencilSimpleLine, Plus, SignOut, Sun } from "phosphor-react";
 import { Avatar, Menu, MenuButton, MenuDivider, MenuItem, MenuList, useColorMode } from "@chakra-ui/react";
 import Link from "next/link";
 
@@ -22,6 +22,11 @@ export const UserMenu = (): JSX.Element => {
       </MenuButton>
 
       <MenuList>
+        <Link href="/guesses/new" passHref>
+          <MenuItem icon={<Plus size={20} />}>
+            Novo palpites
+          </MenuItem>
+        </Link>
         <Link href="/" passHref>
           <MenuItem icon={<PencilSimpleLine size={20} />}>
             Meus palpites
