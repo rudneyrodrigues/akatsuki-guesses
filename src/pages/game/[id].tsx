@@ -1,9 +1,10 @@
-import Head from "next/head";
-import { Flex, Heading, Spinner, Text } from "@chakra-ui/react";
-import { GraphQLClient } from "graphql-request";
-import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import { Sidebar } from "../../components/Sidebar";
 import useSWR from "swr";
+import Head from "next/head";
+import { GraphQLClient } from "graphql-request";
+import { Flex, Heading, Spinner, Text } from "@chakra-ui/react";
+import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
+
+import { Sidebar } from "../../components/Sidebar";
 import { GameGuesses } from "../../components/Guesses/GameGuesses";
 
 type Team = {
@@ -70,7 +71,7 @@ const Game: NextPage = ({ game }: GameProps): JSX.Element => {
   return (
     <>
       <Head>
-        <title>Copa do Mundo 2022</title>
+        <title>{game.teams[0].title} x {game.teams[1].title} - Copa do Mundo 2022</title>
       </Head>
 
       <Flex as="main" maxW="container.xl" mx="auto" minH="calc(100vh - 5rem)">
