@@ -52,12 +52,12 @@ const GameComponent = (props: GameProps): JSX.Element => {
         border="1px solid"
         transitionDuration=".2s"
         bgColor={isActiveLesson ? "green.500" : ""}
-        opacity={availableDateFormatted ? "" : ".5"}
-        pointerEvents={!availableDateFormatted ? "none" : "auto"}
+        opacity={!isGuessAvailable ? "" : ".5"}
+        pointerEvents={isGuessAvailable ? "none" : "auto"}
         borderColor={isActiveLesson ? "green.500" : "gray.500"}
         _hover={{
           textDecoration: "none",
-          cursor: !availableDateFormatted && "not-allowed",
+          cursor: isGuessAvailable && "not-allowed",
           borderColor: "green.500",
         }}
         passHref

@@ -26,7 +26,6 @@ export const useGuessesByEmail = (email: string) => {
   const { data, error } = useSWR<UserGuessesData>(
     `/api/guesses/user/${email}`,
     fetcher,
-    { refreshInterval: 1000 }
   );
 
   return {
