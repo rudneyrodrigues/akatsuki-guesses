@@ -13,16 +13,13 @@ type GuessesData = {
   secondTeamPoints: number;
   game: {
     id: string;
+    date: string;
     teams: Teams[];
   }
 }
 
 type Data = {
   guesses: GuessesData[];
-}
-
-type BodyGetProps = {
-  email: string;
 }
 
 const guesses = async (
@@ -42,6 +39,7 @@ const guesses = async (
           secondTeamPoints
           game {
             id
+            date
             teams {
               title
               flagUrl

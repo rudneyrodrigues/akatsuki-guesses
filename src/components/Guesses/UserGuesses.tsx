@@ -1,26 +1,10 @@
-import { Plus } from 'phosphor-react';
-import { useEffect, useState } from 'react';
-import { useSession } from 'next-auth/react';
-import { Button, Divider, Flex, Heading, Highlight, Icon, Spinner, Table, TableCaption, TableContainer, Tbody, Td, Text, Th, Thead, Tr, VStack } from '@chakra-ui/react';
-import { api } from '../../services/api';
 import Link from 'next/link';
-import useSWR from 'swr';
+import { Plus } from 'phosphor-react';
+import { useSession } from 'next-auth/react';
+import { Button, Divider, Flex, Heading, Icon, Spinner, Table, TableCaption, TableContainer, Tbody, Td, Text, Th, Thead, Tr, VStack } from '@chakra-ui/react';
+
 import { useGuessesByEmail } from '../../lib/useGuessesByEmail';
 
-type Teams = {
-  title: string;
-  flagUrl: string;
-}
-
-type UserGuessesData = {
-  id: string;
-  firstTeamPoints: number;
-  secondTeamPoints: number;
-  game: {
-    id: string;
-    teams: Teams[];
-  }
-}
 
 export const UserGuesses = (): JSX.Element => {
   const { data: session } = useSession();
@@ -131,7 +115,7 @@ export const UserGuesses = (): JSX.Element => {
                 <Th isNumeric>Gols</Th>
                 <Th>Time 2</Th>
                 <Th isNumeric>Gols</Th>
-                {/* <Th>Data</Th> */}
+                <Th>Data</Th>
               </Tr>
             </Thead>
 
@@ -150,6 +134,13 @@ export const UserGuesses = (): JSX.Element => {
                     </Td>
                     <Td isNumeric>
                       {guess.secondTeamPoints}
+                    </Td>
+                    <Td>
+                      {new Date(guess.game.date).toLocaleDateString('pt-BR', {
+                        day: 'numeric',
+                        month: 'numeric',
+                        year: 'numeric',
+                      })}
                     </Td>
                   </Tr>
                 )

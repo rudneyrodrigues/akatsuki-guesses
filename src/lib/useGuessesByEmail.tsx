@@ -11,6 +11,7 @@ type Guesses = {
   secondTeamPoints: number;
   game: {
     id: string;
+    date: string;
     teams: Teams[];
   }
 }

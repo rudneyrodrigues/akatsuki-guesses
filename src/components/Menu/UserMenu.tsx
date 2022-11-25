@@ -1,6 +1,7 @@
 import { signOut, useSession } from "next-auth/react";
 import { Moon, PencilSimpleLine, SignOut, Sun } from "phosphor-react";
 import { Avatar, Menu, MenuButton, MenuDivider, MenuItem, MenuList, useColorMode } from "@chakra-ui/react";
+import Link from "next/link";
 
 export const UserMenu = (): JSX.Element => {
   const { data: session } = useSession();
@@ -21,9 +22,11 @@ export const UserMenu = (): JSX.Element => {
       </MenuButton>
 
       <MenuList>
-        <MenuItem icon={<PencilSimpleLine size={20} />}>
-          Meus palpites
-        </MenuItem>
+        <Link href="/" passHref>
+          <MenuItem icon={<PencilSimpleLine size={20} />}>
+            Meus palpites
+          </MenuItem>
+        </Link>
         { colorMode === 'dark' ? (
           <MenuItem icon={<Sun size={20} />} onClick={toggleColorMode}>
             Tema claro
