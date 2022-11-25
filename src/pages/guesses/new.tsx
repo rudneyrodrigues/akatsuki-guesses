@@ -47,7 +47,7 @@ const NewGuessPage = () => {
       <Flex as="main" maxW="container.xl" mx="auto" minH="calc(100vh - 5rem)">
         <NewGuess games={data?.games} />
 
-        <Sidebar games={data?.games} />
+        <Sidebar />
       </Flex>
     </>
   )

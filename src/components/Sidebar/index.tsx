@@ -14,8 +14,9 @@ import {
   VStack
 } from "@chakra-ui/react";
 
-import { useSidebarDrawer } from "../../contexts/SidebarDrawerContext";
 import { Game } from "./Game";
+import { useGetAllGames } from '../../lib/useGetAllGames';
+import { useSidebarDrawer } from "../../contexts/SidebarDrawerContext";
 
 type Team = {
   title: string;
@@ -35,7 +36,8 @@ interface SidebarProps {
   games: Games[];
 }
 
-const SidebarComponent = ({ games }: SidebarProps): JSX.Element => {
+export const Sidebar = (): JSX.Element => {
+  const { data } = useGetAllGames();
   const { onClose, isOpen } = useSidebarDrawer();
 
   const isDrawerSidebar = useBreakpointValue({
@@ -75,7 +77,7 @@ const SidebarComponent = ({ games }: SidebarProps): JSX.Element => {
               }}
             >
               <VStack w="full" spacing="6">
-                { games.map(game => (
+                { data.games.map(game => (
                   <Game
                     key={game.id}
                     id={game.id}
@@ -136,7 +138,7 @@ const SidebarComponent = ({ games }: SidebarProps): JSX.Element => {
       />
 
       <VStack spacing="4">
-        { games.map(game => (
+        { data.games.map(game => (
           <Game
             key={game.id}
             id={game.id}
@@ -150,6 +152,6 @@ const SidebarComponent = ({ games }: SidebarProps): JSX.Element => {
   )
 }
 
-export const Sidebar = memo(SidebarComponent, (prevProps, nextProps) => {
-  return Object.is(prevProps.games, nextProps.games);
-});
+// export const Sidebar = memo(SidebarComponent, (prevProps, nextProps) => {
+//   return Object.is(prevProps.games, nextProps.games);
+// });

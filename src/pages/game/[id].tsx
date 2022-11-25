@@ -77,7 +77,7 @@ const Game: NextPage = ({ game }: GameProps): JSX.Element => {
       <Flex as="main" maxW="container.xl" mx="auto" minH="calc(100vh - 5rem)">
         <GameGuesses game={game} />
 
-        <Sidebar games={data?.games} />
+        <Sidebar />
       </Flex>
     </>
   )

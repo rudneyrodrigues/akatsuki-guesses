@@ -51,14 +51,17 @@ const GameComponent = (props: GameProps): JSX.Element => {
         borderRadius="md"
         border="1px solid"
         transitionDuration=".2s"
-        bgColor={isActiveLesson ? "green.500" : ""}
-        opacity={!isGuessAvailable ? "" : ".5"}
-        pointerEvents={isGuessAvailable ? "none" : "auto"}
-        borderColor={isActiveLesson ? "green.500" : "gray.500"}
+        borderColor="gray.300"
+        { ...(isActiveLesson) && {
+          bg: isGuessAvailable ? 'red.600' : 'green.600',
+          borderColor: isGuessAvailable ? "red.500" : "green.500"
+        } }
         _hover={{
           textDecoration: "none",
-          cursor: isGuessAvailable && "not-allowed",
           borderColor: "green.500",
+        }}
+        _dark={{
+          borderColor: 'gray.700',
         }}
         passHref
       >
