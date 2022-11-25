@@ -20,6 +20,7 @@ type Guess = {
   participant: {
     id: string;
     name: string;
+    email: string;
   }
 }
 
@@ -116,6 +117,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
           participant {
             id
             name
+            email
           }
         }
       }

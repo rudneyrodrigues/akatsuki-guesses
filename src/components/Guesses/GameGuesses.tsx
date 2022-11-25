@@ -15,6 +15,7 @@ type Guess = {
   participant: {
     id: string;
     name: string;
+    email: string;
   }
 }
 
@@ -66,30 +67,48 @@ export const GameGuesses = ({ game }: GameGuessesProps): JSX.Element => {
           <Thead>
             <Tr>
               <Th>Usuário</Th>
-              <Th>Time 1</Th>
-              <Th isNumeric>Gols</Th>
-              <Th>Time 2</Th>
-              <Th isNumeric>Gols</Th>
+              <Th isNumeric>{game.teams[0].title}</Th>
+              <Th isNumeric>{game.teams[1].title}</Th>
             </Tr>
           </Thead>
 
           <Tbody>
+            { game.guesses.length <= 0 && (
+              <Tr>
+                <Td colSpan={5} textAlign="center">
+                  <Text color="gray.700" _dark={{ color: 'gray.300' }}>
+                    Nenhum palpite foi feito para esse jogo
+                  </Text>
+                </Td>
+              </Tr>
+            ) }
+
             { game.guesses.map(guess => {
               return (
                 <Tr key={guess.id}>
-                  <Td fontSize="sm" fontWeight="bold">
-                    {
-                      guess.participant.name.split(' ')[0].toUpperCase()
-                    }
-                  </Td>
                   <Td>
-                    {game.teams[0].title}
+                    <Text
+                      fontSize="sm"
+                      fontWeight="bold"
+                      textTransform="capitalize"
+                    >
+                      {
+                        // Get first and last name
+                        // guess.participant.name.split(' ').slice(0, 2).join(' ').toLocaleLowerCase()
+                        guess.participant.name.toLocaleLowerCase()
+                      }
+                    </Text>
+                    <Text
+                      fontSize="xs"
+                      fontWeight="normal"
+                      color="gray.700"
+                      _dark={{ color: 'gray.300' }}
+                    >
+                      { guess.participant.email }
+                    </Text>
                   </Td>
                   <Td isNumeric>
                     {guess.firstTeamPoints}
-                  </Td>
-                  <Td>
-                    {game.teams[1].title}
                   </Td>
                   <Td isNumeric>
                     {guess.secondTeamPoints}

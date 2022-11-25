@@ -24,7 +24,7 @@ export const UserMenu = (): JSX.Element => {
       <MenuList>
         <Link href="/guesses/new" passHref>
           <MenuItem icon={<Plus size={20} />}>
-            Novo palpites
+            Novo palpite
           </MenuItem>
         </Link>
         <Link href="/" passHref>
