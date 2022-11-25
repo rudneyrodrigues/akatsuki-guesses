@@ -28,8 +28,13 @@ const phases = async (
     const { id } = req.query;
 
     await graphql.request(`
-      query GetAllGamesByPhase($id: ID!) {
-        games(where: {phase: {id: $id}}, orderBy: date_ASC) {
+      query GetAllGamesByPhase($id: ID!, $date: DateTime!) {
+        games(
+          stage: PUBLISHED
+          where: {phase: {id: $id}, date_gte: $date}
+          orderBy: date_ASC
+          first: 50
+        ) {
           id
           date
           teams {
@@ -40,7 +45,8 @@ const phases = async (
         }
       }
     `, {
-      id
+      id,
+      date: String(new Date().toJSON())
     }).then(data => {
       res.status(200).json(data);
     });

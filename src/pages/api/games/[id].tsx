@@ -29,7 +29,7 @@ const phases = async (
 
     await graphql.request(`
       query GetGameById($id: ID!) {
-        game(where: {id: $id}) {
+        game(stage: PUBLISHED, where: {id: $id}) {
           id
           date
           teams {

@@ -10,6 +10,11 @@ export const UserGuesses = (): JSX.Element => {
   const { data: session } = useSession();
   const { data, isError, isLoading } = useGuessesByEmail(session?.user.email);
 
+  // sort predictions by game date
+  data?.guesses.sort((a, b) => {
+    return new Date(a.game.date).getTime() - new Date(b.game.date).getTime();
+  });
+
   if (!session) {
     return (
       <Flex

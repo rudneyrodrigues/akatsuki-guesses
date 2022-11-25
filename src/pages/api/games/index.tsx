@@ -28,7 +28,7 @@ const games = async (
   if (req.method === 'GET') {
     await graphql.request(`
       query GetAllGames {
-        games(orderBy: date_ASC) {
+        games(stage: PUBLISHED, orderBy: date_ASC, first: 50) {
           id
           date
           teams {

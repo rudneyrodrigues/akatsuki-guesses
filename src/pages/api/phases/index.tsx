@@ -20,7 +20,7 @@ const phases = async (
   if (req.method === 'GET') {
     await graphql.request(`
       query GetAllPhases {
-        phases {
+        phases(stage: PUBLISHED) {
           id
           title
         }
