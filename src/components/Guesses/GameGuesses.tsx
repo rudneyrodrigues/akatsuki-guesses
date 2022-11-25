@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import { Plus } from 'phosphor-react';
-import { Button, Divider, Flex, Heading, Icon, Spinner, Table, TableCaption, TableContainer, Tbody, Td, Text, Th, Thead, Tr, VStack } from '@chakra-ui/react';
+import { Plus, X } from 'phosphor-react';
+import { Box, Button, Divider, Flex, Grid, Heading, HStack, Icon, Image, Spinner, Table, TableCaption, TableContainer, Tbody, Td, Text, Th, Thead, Tr, VStack } from '@chakra-ui/react';
 
 type Team = {
   id: string;
@@ -35,20 +35,101 @@ interface GameGuessesProps {
 export const GameGuesses = ({ game }: GameGuessesProps): JSX.Element => {
   return (
     <VStack flex={1} w="full" spacing="8" p="8">
-      <Flex
+      <Grid
         gap="4"
-        w="full"
-        align="center"
-        justify="space-between"
+        w={{ md: 'full' }}
+        alignSelf="center"
+        alignItems="center"
+        justifyContent="space-between"
+        gridTemplateColumns={{
+          base: '1fr',
+          md: '1fr 1fr 1fr',
+        }}
       >
-        <Heading size="lg">
+        <Heading size="md" textAlign={{
+          base: 'center',
+          md: 'left',
+        }}>
           {game.teams[0].title} x {game.teams[1].title}
         </Heading>
 
-        <Text fontSize="sm" color="gray.700" _dark={{ color: 'gray.300' }}>
+        <Flex
+          gap="2"
+          align="center"
+        >
+          <HStack>
+            <Image
+              src={game.teams[0].flagUrl}
+              alt={game.teams[0].title}
+              w="3.125rem"
+              h="3.125rem"
+              objectFit="cover"
+              rounded="lg"
+            />
+
+            <Flex
+              align="center"
+              justify="center"
+              w="3.125rem"
+              minW="3.125rem"
+              h="3.125rem"
+              minH="3.125rem"
+              bg="gray.200"
+              rounded="lg"
+              _dark={{
+                bg: 'gray.800'
+              }}
+            >
+              <Heading size="lg">
+                {game.firstTeamPoints}
+              </Heading>
+            </Flex>
+          </HStack>
+
+          <Icon as={X} />
+
+          <HStack>
+            <Flex
+              align="center"
+              justify="center"
+              w="3.125rem"
+              minW="3.125rem"
+              h="3.125rem"
+              minH="3.125rem"
+              bg="gray.200"
+              rounded="lg"
+              _dark={{
+                bg: 'gray.800'
+              }}
+            >
+              <Heading size="lg">
+                {game.secondTeamPoints}
+              </Heading>
+            </Flex>
+
+            <Image
+              src={game.teams[1].flagUrl}
+              alt={game.teams[1].title}
+              w="3.125rem"
+              h="3.125rem"
+              objectFit="cover"
+              rounded="lg"
+            />
+          </HStack>
+        </Flex>
+
+        <Text
+          fontSize="sm"
+          textAlign={{
+            base: 'center',
+            md: "right"
+          }}
+          color="gray.700"
+          _dark={{ color: 'gray.300' }}
+        >
           {game.date}
         </Text>
-      </Flex>
+      </Grid>
 
       <Divider
         my="4"
