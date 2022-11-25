@@ -7,10 +7,10 @@ type Data = {
 }
 
 type BodyPostProps = {
+  email: string;
+  gameId: string;
   firstTeamPoints: number;
   secondTeamPoints: number;
-  gameId: string;
-  email: string;
 }
 
 const guesses = async (
@@ -22,10 +22,10 @@ const guesses = async (
   if (req.method === 'POST') {
     const { body }: { body: BodyPostProps} = req;
 
-    const checkingUserHasGuessed = await graphql.request(`
-      query GetAllGuessesByGame($id:ID!) {
+    await graphql.request(`
+      query GetAllGuessesByGame($id: ID!, $email: String!) {
         game(where: {id: $id}) {
-          guesses {
+          guesses(where: {participant: {email: $email}}) {
             participant {
               email
             }
@@ -33,58 +33,55 @@ const guesses = async (
         }
       }
     `, {
-      id: body.gameId
-    }).then(data => {
-      if (data.game.guesses[0]?.participant.email === body.email) {
-        return true;
-      }
-    })
-
-    if (checkingUserHasGuessed) {
-      return res.status(400).json({ error: 'You already guessed this game' })
-    }
-
-    await graphql.request(`
-      mutation CreateGuess($firstTeamPoints: Int!, $secondTeamPoints:Int!, $gameId: ID!, $email:String!) {
-        createGuess(
-          data: {firstTeamPoints: $firstTeamPoints, secondTeamPoints: $secondTeamPoints, game: {connect: {id: $gameId}}, participant: {connect: {email: $email}}}
-        ) {
-          id
-          game {
-            id
-          }
-        }
-      }
-    `, {
-      firstTeamPoints: body.firstTeamPoints,
-      secondTeamPoints: body.secondTeamPoints,
-      gameId: body.gameId,
+      id: body.gameId,
       email: body.email
     }).then(async (data) => {
-      await graphql.request(`
-        mutation PublishGuess($id: ID!) {
-          publishGuess(where: {id: $id}) {
-            id
+      if (data.game.guesses[0]?.participant.email === body.email) {
+        return res.status(400).json({ error: 'You already guessed this game' })
+      } else {
+        await graphql.request(`
+          mutation CreateGuess($firstTeamPoints: Int!, $secondTeamPoints:Int!, $gameId: ID!, $email:String!) {
+            createGuess(
+              data: {firstTeamPoints: $firstTeamPoints, secondTeamPoints: $secondTeamPoints, game: {connect: {id: $gameId}}, participant: {connect: {email: $email}}}
+            ) {
+              id
+              game {
+                id
+              }
+            }
           }
-        }
-      `, {
-        id: data.createGuess.id
-      });
+        `, {
+          firstTeamPoints: body.firstTeamPoints,
+          secondTeamPoints: body.secondTeamPoints,
+          gameId: body.gameId,
+          email: body.email
+        }).then(async (data) => {
+          await graphql.request(`
+            mutation PublishGuess($id: ID!) {
+              publishGuess(where: {id: $id}) {
+                id
+              }
+            }
+          `, {
+            id: data.createGuess.id
+          });
 
-      await graphql.request(`
-        mutation PublishGame($id: ID!) {
-          publishGame(where: {id: $id}) {
-            id
-          }
-        }
-      `, {
-        id: data.createGuess.game.id
-      });
+          await graphql.request(`
+            mutation PublishGame($id: ID!) {
+              publishGame(where: {id: $id}) {
+                id
+              }
+            }
+          `, {
+            id: data.createGuess.game.id
+          });
 
-      return res.status(201).json({
-        id: data.createGuess.id
-      });
-    });
+          return res.status(201).json({
+            id: data.createGuess.id
+          });
+        });
+      }
+    })
   }
 }
 

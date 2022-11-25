@@ -1,11 +1,12 @@
 import { X } from "phosphor-react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 import { Button, Flex, HStack, Icon, Image, Input, Spinner, Text, useToast, VStack } from "@chakra-ui/react";
 
 import { api } from "../../../services/api";
 import { useGetGameById } from "../../../lib/useGetGameById";
-import { useSession } from "next-auth/react";
+import { useGuessesByEmail } from "../../../lib/useGuessesByEmail";
 
 interface GuessProps {
   gameId: string;
@@ -17,6 +18,7 @@ export const Guess = ({ gameId }: GuessProps): JSX.Element => {
 
   const { data: session } = useSession();
   const { data, isError, isLoading: isDataLoading } = useGetGameById(gameId);
+  const { mutate } = useGuessesByEmail(session.user.email);
 
   const [isLoading, setIsLoading] = useState(false);
   const [firstTeamPoint, setFirstTeamPoint] = useState(0);
@@ -54,7 +56,7 @@ export const Guess = ({ gameId }: GuessProps): JSX.Element => {
       }).catch((err) => {
         toast({
           title: "Erro ao enviar palpite.",
-          description: err.response.data.error,
+          description: `Erro: ${err.response.data.error}`,
           status: "error",
           duration: 9000,
           isClosable: true,
@@ -62,6 +64,7 @@ export const Guess = ({ gameId }: GuessProps): JSX.Element => {
         })
       }).finally(() => {
         setIsLoading(false);
+        mutate();
       })
     } catch (error) {
       console.log(error);

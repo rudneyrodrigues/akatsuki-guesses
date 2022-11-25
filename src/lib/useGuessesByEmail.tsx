@@ -23,7 +23,7 @@ type UserGuessesData = {
 export const useGuessesByEmail = (email: string) => {
   const fetcher = (...args: any) => fetch(args).then(res => res.json())
 
-  const { data, error } = useSWR<UserGuessesData>(
+  const { data, error, mutate } = useSWR<UserGuessesData>(
     `/api/guesses/user/${email}`,
     fetcher,
   );
@@ -31,6 +31,7 @@ export const useGuessesByEmail = (email: string) => {
   return {
     data: data,
     isLoading: !error && !data,
-    isError: error
+    isError: error,
+    mutate,
   }
 }
