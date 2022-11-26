@@ -2,20 +2,34 @@
 import { GraphQLClient } from 'graphql-request';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-type TeamsData = {
+type Team = {
   id: string;
   title: string;
   flagUrl: string;
 }
 
-type GamesData = {
+type Guess = {
+  id: string;
+  firstTeamPoints: number;
+  secondTeamPoints: number;
+  participant: {
+    id: string;
+    name: string;
+    email: string;
+  }
+}
+
+type GameData = {
   id: string;
   date: string;
-  teams: TeamsData[];
+  firstTeamPoints?: number;
+  secondTeamPoints?: number;
+  teams: Team[];
+  guesses: Guess[];
 }
 
 type Data = {
-  games: GamesData;
+  games: GameData;
 }
 
 const phases = async (
@@ -29,13 +43,25 @@ const phases = async (
 
     await graphql.request(`
       query GetGameById($id: ID!) {
-        game(stage: PUBLISHED, where: {id: $id}) {
+        game(where: {id: $id}) {
           id
           date
+          firstTeamPoints
+          secondTeamPoints
           teams {
             id
             title
             flagUrl
+          }
+          guesses(orderBy: createdAt_ASC) {
+            id
+            firstTeamPoints
+            secondTeamPoints
+            participant {
+              id
+              name
+              email
+            }
           }
         }
       }

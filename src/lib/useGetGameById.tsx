@@ -1,19 +1,33 @@
 import useSWR from "swr";
 
-type TeamsData = {
+type Team = {
   id: string;
   title: string;
   flagUrl: string;
 }
 
-type GamesData = {
+type Guess = {
+  id: string;
+  firstTeamPoints: number;
+  secondTeamPoints: number;
+  participant: {
+    id: string;
+    name: string;
+    email: string;
+  }
+}
+
+type GameData = {
   id: string;
   date: string;
-  teams: TeamsData[];
+  firstTeamPoints?: number;
+  secondTeamPoints?: number;
+  teams: Team[];
+  guesses: Guess[];
 }
 
 type Data = {
-  game: GamesData;
+  game: GameData;
 }
 
 export const useGetGameById = (id: string) => {
