@@ -1,6 +1,5 @@
-import Link from 'next/link';
-import { Plus, X } from 'phosphor-react';
-import { Box, Button, Divider, Flex, Grid, Heading, HStack, Icon, Image, Spinner, Table, TableCaption, TableContainer, Tbody, Td, Text, Th, Thead, Tr, VStack } from '@chakra-ui/react';
+import { X } from 'phosphor-react';
+import { Divider, Flex, Grid, Heading, HStack, Icon, Image, Table, TableCaption, TableContainer, Tbody, Td, Text, Th, Thead, Tr, VStack } from '@chakra-ui/react';
 
 type Team = {
   id: string;
@@ -170,7 +169,15 @@ export const GameGuesses = ({ game }: GameGuessesProps): JSX.Element => {
 
             { game.guesses.map(guess => {
               return (
-                <Tr key={guess.id}>
+                <Tr
+                  key={guess.id}
+                  bg={
+                    game.firstTeamPoints === guess.firstTeamPoints && game.secondTeamPoints === guess.secondTeamPoints ? 'green.300' : 'transparent'
+                  }
+                  _dark={{
+                    bg: game.firstTeamPoints === guess.firstTeamPoints && game.secondTeamPoints === guess.secondTeamPoints ? 'green.700' : 'transparent'
+                  }}
+                >
                   <Td>
                     <Text
                       fontSize="sm"
@@ -178,8 +185,6 @@ export const GameGuesses = ({ game }: GameGuessesProps): JSX.Element => {
                       textTransform="capitalize"
                     >
                       {
-                        // Get first and last name
-                        // guess.participant.name.split(' ').slice(0, 2).join(' ').toLocaleLowerCase()
                         guess.participant.name.toLocaleLowerCase()
                       }
                     </Text>
