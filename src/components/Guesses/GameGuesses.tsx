@@ -127,7 +127,11 @@ export const GameGuesses = ({ game }: GameGuessesProps): JSX.Element => {
           color="gray.700"
           _dark={{ color: 'gray.300' }}
         >
-          {game.date}
+          {new Date(game.date).toLocaleString('pt-BR', {
+            day: '2-digit',
+            month: 'long',
+            year: 'numeric',
+          })}
         </Text>
       </Grid>
 
