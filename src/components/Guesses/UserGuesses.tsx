@@ -1,7 +1,7 @@
 import Link from 'next/link';
-import { Plus } from 'phosphor-react';
+import { Plus, X } from 'phosphor-react';
 import { useSession } from 'next-auth/react';
-import { Button, Divider, Flex, Heading, Icon, Spinner, Table, TableCaption, TableContainer, Tbody, Td, Text, Th, Thead, Tr, VStack } from '@chakra-ui/react';
+import { Button, Divider, Flex, Grid, Heading, HStack, Icon, Image, Spinner, Text, VStack } from '@chakra-ui/react';
 
 import { useGuessesByEmail } from '../../lib/useGuessesByEmail';
 
@@ -108,51 +108,110 @@ export const UserGuesses = (): JSX.Element => {
           Você ainda não registrou nenhum palpite
         </Text>
       ) : (
-        <TableContainer w="full">
-          <Table variant="simple">
-            <TableCaption>
-              Meus palpites na copa
-            </TableCaption>
+        <Grid
+          w="full"
+          gap="4"
+          gridTemplateColumns={{
+            base: '1fr',
+            md: '1fr 1fr',
+            lg: '1fr 1fr 1fr',
+          }}
+        >
+          { data.guesses.map(guess => (
+            <Flex
+              key={guess.id}
+              as={Link}
+              href={`/game/${guess.game.id}`}
+              p="2"
+              py="4"
+              gap="8"
+              rounded="lg"
+              bg="gray.200"
+              flexDir="column"
+              alignItems="center"
+              justifyContent="center"
+              _dark={{
+                bg: "gray.800"
+              }}
+            >
+              <Text
+                fontWeight="bold"
+                fontSize="sm"
+                color="gray.700"
+                _dark={{
+                  color: "gray.300"
+                }}
+              >
+                {
+                  new Date(guess.game.date).toLocaleDateString('pt-BR', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric',
+                  })
+                }
+              </Text>
 
-            <Thead>
-              <Tr>
-                <Th>Time 1</Th>
-                <Th isNumeric>Gols</Th>
-                <Th>Time 2</Th>
-                <Th isNumeric>Gols</Th>
-                <Th>Data</Th>
-              </Tr>
-            </Thead>
-
-            <Tbody>
-              { data.guesses.map(guess => {
-                return (
-                  <Tr key={guess.id}>
-                    <Td>
-                      {guess.game.teams[0].title}
-                    </Td>
-                    <Td isNumeric>
+              <Flex
+                w="full"
+                gap="2"
+                align="center"
+                justify="space-between"
+              >
+                <HStack>
+                  <Image
+                    src={guess.game.teams[0].flagUrl}
+                    alt={guess.game.teams[0].title}
+                    w="3.125rem"
+                    h="3.125rem"
+                    rounded="lg"
+                    objectFit="cover"
+                  />
+                  <Flex
+                    minW="3.125rem"
+                    minH="3.125rem"
+                    w="3.125rem"
+                    h="3.125rem"
+                    rounded="lg"
+                    bg="gray.700"
+                    align="center"
+                    justify="center"
+                  >
+                    <Heading>
                       {guess.firstTeamPoints}
-                    </Td>
-                    <Td>
-                      {guess.game.teams[1].title}
-                    </Td>
-                    <Td isNumeric>
+                    </Heading>
+                  </Flex>
+                </HStack>
+
+                <Icon as={X} color="gray" />
+
+                <HStack>
+                  <Flex
+                    minW="3.125rem"
+                    minH="3.125rem"
+                    w="3.125rem"
+                    h="3.125rem"
+                    rounded="lg"
+                    bg="gray.700"
+                    align="center"
+                    justify="center"
+                  >
+                    <Heading>
                       {guess.secondTeamPoints}
-                    </Td>
-                    <Td>
-                      {new Date(guess.game.date).toLocaleDateString('pt-BR', {
-                        day: 'numeric',
-                        month: 'numeric',
-                        year: 'numeric',
-                      })}
-                    </Td>
-                  </Tr>
-                )
-              }) }
-            </Tbody>
-          </Table>
-        </TableContainer>
+                    </Heading>
+                  </Flex>
+                  <Image
+                    src={guess.game.teams[1].flagUrl}
+                    alt={guess.game.teams[1].title}
+                    w="3.125rem"
+                    h="3.125rem"
+                    rounded="lg"
+                    objectFit="cover"
+                  />
+                </HStack>
+              </Flex>
+            </Flex>
+          )) }
+        </Grid>
       ) }
     </VStack>
   )
