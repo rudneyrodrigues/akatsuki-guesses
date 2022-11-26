@@ -32,7 +32,7 @@ type Data = {
   games: GameData;
 }
 
-const phases = async (
+const gamesById = async (
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) => {
@@ -73,4 +73,4 @@ const phases = async (
   }
 }
 
-export default phases;
+export default gamesById;

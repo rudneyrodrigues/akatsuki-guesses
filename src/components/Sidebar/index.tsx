@@ -8,7 +8,9 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerOverlay,
+  Flex,
   Heading,
+  Spinner,
   Text,
   useBreakpointValue,
   VStack
@@ -37,13 +39,89 @@ interface SidebarProps {
 }
 
 export const Sidebar = (): JSX.Element => {
-  const { data } = useGetAllGames();
+  const { data, isError, isLoading } = useGetAllGames();
   const { onClose, isOpen } = useSidebarDrawer();
 
   const isDrawerSidebar = useBreakpointValue({
     base: true,
     xl: false,
   });
+
+  if (isError) {
+    return (
+      <Flex
+        p="8"
+        w="400px"
+        maxH="calc(100vh - 80px)"
+        minH="calc(100vh - 80px)"
+        bg="gray.200"
+        position="sticky"
+        top="20"
+        borderX="1px solid"
+        borderColor="gray.300"
+        overflowY="auto"
+        align="center"
+        justify="center"
+        _dark={{
+          bg: 'gray.900',
+          borderColor: 'gray.800'
+        }}
+        css={{
+          '&::-webkit-scrollbar': {
+            width: '4px',
+          },
+          '&::-webkit-scrollbar-track': {
+            backgroundColor: '#202024',
+          },
+          '&::-webkit-scrollbar-thumb': {
+            backgroundColor: '#00875F',
+            borderRadius: '20px',
+          },
+        }}
+      >
+        <Text>
+          Ocorreu um erro ao carregar os jogos.
+        </Text>
+      </Flex>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <Flex
+        p="8"
+        w="400px"
+        maxH="calc(100vh - 80px)"
+        minH="calc(100vh - 80px)"
+        bg="gray.200"
+        position="sticky"
+        top="20"
+        borderX="1px solid"
+        borderColor="gray.300"
+        overflowY="auto"
+        align="center"
+        justify="center"
+        _dark={{
+          bg: 'gray.900',
+          borderColor: 'gray.800'
+        }}
+        css={{
+          '&::-webkit-scrollbar': {
+            width: '4px',
+          },
+          '&::-webkit-scrollbar-track': {
+            backgroundColor: '#202024',
+          },
+          '&::-webkit-scrollbar-thumb': {
+            backgroundColor: '#00875F',
+            borderRadius: '20px',
+          },
+        }}
+      >
+        <Spinner size="lg" color="yellow" />
+      </Flex>
+    );
+  }
 
   if (isDrawerSidebar) {
     return (
