@@ -1,7 +1,8 @@
 import Link from 'next/link';
+import { isPast } from 'date-fns';
 import { Plus, X } from 'phosphor-react';
 import { useSession } from 'next-auth/react';
-import { Button, Divider, Flex, Grid, Heading, HStack, Icon, Image, Spinner, Text, VStack } from '@chakra-ui/react';
+import { Button, Divider, Flex, Grid, Heading, HStack, Icon, Image, Spinner, Tag, Text, VStack } from '@chakra-ui/react';
 
 import { useGuessesByEmail } from '../../lib/useGuessesByEmail';
 
@@ -9,6 +10,12 @@ import { useGuessesByEmail } from '../../lib/useGuessesByEmail';
 export const UserGuesses = (): JSX.Element => {
   const { data: session } = useSession();
   const { data, isError, isLoading } = useGuessesByEmail(session?.user.email);
+
+  const isGamePast = (date: Date): boolean => {
+    const isPastBoolean = isPast(date);
+
+    return isPastBoolean;
+  }
 
   // sort predictions by game date
   data?.guesses.sort((a, b) => {
@@ -73,6 +80,7 @@ export const UserGuesses = (): JSX.Element => {
   return (
     <VStack flex={1} w="full" spacing="8" p="8">
       <Flex
+        pt="4"
         gap="4"
         w="full"
         align="center"
@@ -116,11 +124,13 @@ export const UserGuesses = (): JSX.Element => {
             md: '1fr 1fr',
             lg: '1fr 1fr 1fr',
           }}
+          overflowY="auto"
         >
           { data.guesses.map(guess => (
             <Flex
               key={guess.id}
               as={Link}
+              position="relative"
               href={`/game/${guess.game.id}`}
               p="2"
               py="4"
@@ -134,22 +144,41 @@ export const UserGuesses = (): JSX.Element => {
                 bg: "gray.800"
               }}
             >
-              <Text
-                fontWeight="bold"
-                fontSize="sm"
-                color="gray.700"
-                _dark={{
-                  color: "gray.300"
-                }}
+              <HStack
+                w="full"
+                align="center"
+                justify="space-between"
               >
-                {
-                  new Date(guess.game.date).toLocaleDateString('pt-BR', {
-                    day: 'numeric',
-                    month: 'long',
-                    year: 'numeric',
-                  })
-                }
-              </Text>
+                { isGamePast(new Date(guess.game.date)) && (
+                  <Tag
+                    size="sm"
+                    colorScheme="red"
+                  >
+                    Encerrado
+                  </Tag>
+                ) }
+
+                <Text
+                  fontWeight="bold"
+                  fontSize="xs"
+                  textAlign={
+                    isGamePast(new Date(guess.game.date)) ? 'right' : 'center'
+                  }
+                  flex="1"
+                  color="gray.700"
+                  _dark={{
+                    color: "gray.300"
+                  }}
+                >
+                  {
+                    new Date(guess.game.date).toLocaleDateString('pt-BR', {
+                      day: 'numeric',
+                      month: 'long',
+                      year: 'numeric',
+                    })
+                  }
+                </Text>
+              </HStack>
 
               <Flex
                 w="full"
@@ -172,9 +201,12 @@ export const UserGuesses = (): JSX.Element => {
                     w="3.125rem"
                     h="3.125rem"
                     rounded="lg"
-                    bg="gray.700"
+                    bg="gray.200"
                     align="center"
                     justify="center"
+                    _dark={{
+                      bg: "gray.700"
+                    }}
                   >
                     <Heading>
                       {guess.firstTeamPoints}
@@ -191,9 +223,12 @@ export const UserGuesses = (): JSX.Element => {
                     w="3.125rem"
                     h="3.125rem"
                     rounded="lg"
-                    bg="gray.700"
+                    bg="gray.200"
                     align="center"
                     justify="center"
+                    _dark={{
+                      bg: "gray.700"
+                    }}
                   >
                     <Heading>
                       {guess.secondTeamPoints}
@@ -209,6 +244,36 @@ export const UserGuesses = (): JSX.Element => {
                   />
                 </HStack>
               </Flex>
+
+              <HStack>
+                <Text
+                  fontWeight="bold"
+                  fontSize="sm"
+                  color="gray.700"
+                  _dark={{
+                    color: "gray.300"
+                  }}
+                >
+                  {
+                    guess.game.teams[0].title
+                  }
+                </Text>
+
+                <Icon as={X} />
+
+                <Text
+                  fontWeight="bold"
+                  fontSize="sm"
+                  color="gray.700"
+                  _dark={{
+                    color: "gray.300"
+                  }}
+                >
+                  {
+                    guess.game.teams[1].title
+                  }
+                </Text>
+              </HStack>
             </Flex>
           )) }
         </Grid>
