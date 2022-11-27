@@ -33,7 +33,7 @@ const guesses = async (
 
     await graphql.request(`
       query GetGuessesByEmail($email: String!) {
-        guesses(where: {participant: {email: $email}}) {
+        guesses(where: {participant: {email: $email}}, first: 50) {
           id
           firstTeamPoints
           secondTeamPoints

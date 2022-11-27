@@ -162,9 +162,9 @@ export const GameGuesses = ({ game }: GameGuessesProps): JSX.Element => {
               <Th>Usuário</Th>
               <Th isNumeric>{game.teams[0].title}</Th>
               <Th isNumeric>{game.teams[1].title}</Th>
-              { !isGameClosed(new Date(game.date)) && (
+              {/* { !isGameClosed(new Date(game.date)) && (
                 <Th></Th>
-              ) }
+              ) } */}
             </Tr>
           </Thead>
 
@@ -216,7 +216,7 @@ export const GameGuesses = ({ game }: GameGuessesProps): JSX.Element => {
                   <Td isNumeric>
                     {guess.secondTeamPoints}
                   </Td>
-                  { !isGameClosed(new Date(game.date)) && (
+                  {/* { !isGameClosed(new Date(game.date)) && (
                     <>
                       { guess.participant.email === session.user.email ? (
                         <Td>
@@ -250,7 +250,7 @@ export const GameGuesses = ({ game }: GameGuessesProps): JSX.Element => {
                         <Td></Td>
                       ) }
                     </>
-                  ) }
+                  ) } */}
                 </Tr>
               )
             }) }
