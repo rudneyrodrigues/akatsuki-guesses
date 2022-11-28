@@ -19,6 +19,7 @@ const NewGuessPage = () => {
         justify="center"
         flexDir="column"
         gap="4"
+        flex={1}
       >
         <Heading>
           Erro ao carregar dados do servidor
@@ -32,7 +33,7 @@ const NewGuessPage = () => {
 
   if (!data) {
     return (
-      <Flex minH="calc(100vh - 5rem)" align="center" justify="center">
+      <Flex flex={1} minH="calc(100vh - 5rem)" align="center" justify="center">
         <Spinner size="xl" color="yellow" />
       </Flex>
     )
@@ -44,11 +45,7 @@ const NewGuessPage = () => {
         <title>Novo palpite - Copa do Mundo 2022</title>
       </Head>
 
-      <Flex as="main" maxW="container.xl" mx="auto" minH="calc(100vh - 5rem)">
-        <NewGuess games={data?.games} />
-
-        <Sidebar />
-      </Flex>
+      <NewGuess games={data?.games} />
     </>
   )
 }

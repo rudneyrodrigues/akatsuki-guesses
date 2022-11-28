@@ -1,7 +1,7 @@
-import { signOut, useSession } from "next-auth/react";
-import { Moon, PencilSimpleLine, Plus, SignOut, Sun } from "phosphor-react";
-import { Avatar, Menu, MenuButton, MenuDivider, MenuItem, MenuList, useColorMode } from "@chakra-ui/react";
 import Link from "next/link";
+import { signOut, useSession } from "next-auth/react";
+import { Moon, PencilSimpleLine, Plus, SignOut, Star, Sun } from "phosphor-react";
+import { Avatar, Menu, MenuButton, MenuDivider, MenuItem, MenuList, useColorMode } from "@chakra-ui/react";
 
 export const UserMenu = (): JSX.Element => {
   const { data: session } = useSession();
@@ -41,6 +41,14 @@ export const UserMenu = (): JSX.Element => {
             Tema escuro
           </MenuItem>
         ) }
+
+        <MenuDivider />
+
+        <Link href="/ranking">
+          <MenuItem icon={<Star size={20} />}>
+            Ranking de pontos
+          </MenuItem>
+        </Link>
 
         <MenuDivider />
 

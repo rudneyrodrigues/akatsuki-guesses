@@ -1,11 +1,12 @@
 import { type AppProps } from 'next/app';
 import NextNProgress from 'nextjs-progressbar';
-import { ChakraProvider } from '@chakra-ui/react';
 import { SessionProvider } from 'next-auth/react';
+import { ChakraProvider, Flex } from '@chakra-ui/react';
 
 import { theme } from '../styles/theme';
-import { SidebarDrawProvider } from '../contexts/SidebarDrawerContext';
 import { Header } from '../components/Header';
+import { Sidebar } from '../components/Sidebar';
+import { SidebarDrawProvider } from '../contexts/SidebarDrawerContext';
 
 export default function App({
   Component,
@@ -20,7 +21,10 @@ export default function App({
         <SidebarDrawProvider>
           <NextNProgress height={2} color="#F7DD43" />
           <Header />
-          <Component {...pageProps} />
+          <Flex as="main" flex={1} maxW="container.xl" mx="auto" minH="calc(100vh - 5rem)">
+            <Component {...pageProps} />
+            <Sidebar />
+          </Flex>
         </SidebarDrawProvider>
       </ChakraProvider>
     </SessionProvider>

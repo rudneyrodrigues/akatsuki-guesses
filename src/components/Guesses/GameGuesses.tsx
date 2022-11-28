@@ -1,7 +1,7 @@
 import { isPast } from 'date-fns';
+import { X } from 'phosphor-react';
 import { useSession } from 'next-auth/react';
-import { PencilSimple, TrashSimple, X } from 'phosphor-react';
-import { Divider, Flex, Grid, Heading, HStack, Icon, IconButton, Image, Table, TableCaption, TableContainer, Tbody, Td, Text, Th, Thead, Tooltip, Tr, VStack } from '@chakra-ui/react';
+import { Divider, Flex, Grid, Heading, HStack, Icon, Image, Table, TableCaption, TableContainer, Tbody, Td, Text, Th, Thead, Tr, VStack } from '@chakra-ui/react';
 
 type Team = {
   id: string;
@@ -18,6 +18,7 @@ type Guess = {
     name: string;
     email: string;
   }
+  points: number;
 }
 
 type GameData = {
@@ -162,9 +163,7 @@ export const GameGuesses = ({ game }: GameGuessesProps): JSX.Element => {
               <Th>Usuário</Th>
               <Th isNumeric>{game.teams[0].title}</Th>
               <Th isNumeric>{game.teams[1].title}</Th>
-              {/* { !isGameClosed(new Date(game.date)) && (
-                <Th></Th>
-              ) } */}
+              <Th isNumeric>Pontuação</Th>
             </Tr>
           </Thead>
 
@@ -216,41 +215,9 @@ export const GameGuesses = ({ game }: GameGuessesProps): JSX.Element => {
                   <Td isNumeric>
                     {guess.secondTeamPoints}
                   </Td>
-                  {/* { !isGameClosed(new Date(game.date)) && (
-                    <>
-                      { guess.participant.email === session.user.email ? (
-                        <Td>
-                          <Flex
-                            h="full"
-                            gap="4"
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="flex-end"
-                          >
-                            <Tooltip label="Editar palpite">
-                              <IconButton
-                                aria-label="Editar"
-                                icon={
-                                  <Icon as={PencilSimple} />
-                                }
-                              />
-                            </Tooltip>
-
-                            <Tooltip label="Excluir palpite">
-                              <IconButton
-                                aria-label="Excluir"
-                                icon={
-                                  <Icon as={TrashSimple} />
-                                }
-                              />
-                            </Tooltip>
-                          </Flex>
-                        </Td>
-                      ) : (
-                        <Td></Td>
-                      ) }
-                    </>
-                  ) } */}
+                  <Td isNumeric>
+                    {guess.points}
+                  </Td>
                 </Tr>
               )
             }) }

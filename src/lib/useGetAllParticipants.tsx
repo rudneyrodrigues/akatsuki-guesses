@@ -1,41 +1,34 @@
 import useSWR from "swr";
 
-type Team = {
-  id: string;
-  title: string;
-  flagUrl: string;
+type Game = {
+  firstTeamPoints: number;
+  secondTeamPoints: number;
 }
 
 type Guess = {
   id: string;
   firstTeamPoints: number;
   secondTeamPoints: number;
-  participant: {
-    id: string;
-    name: string;
-    email: string;
-  }
+  game: Game;
   points: number;
 }
 
-type GameData = {
+type Participants = {
   id: string;
-  date: string;
-  firstTeamPoints?: number;
-  secondTeamPoints?: number;
-  teams: Team[];
-  guesses: Guess[];
+  name: string;
+  email: string;
+  guesses: Guess[]
 }
 
-type Data = {
-  game: GameData;
+interface Data {
+  participants: Participants[]
 }
 
-export const useGetGameById = (id: string) => {
+export const useGetAllParticipants = () => {
   const fetcher = (...args: any) => fetch(args).then(res => res.json())
 
   const { data, error } = useSWR<Data>(
-    `/api/games/${id}`,
+    `/api/users`,
     fetcher,
   );
 

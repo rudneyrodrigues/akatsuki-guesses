@@ -17,6 +17,7 @@ type Guess = {
     name: string;
     email: string;
   }
+  points: number;
 }
 
 type GameData = {
@@ -29,7 +30,7 @@ type GameData = {
 }
 
 type Data = {
-  games: GameData;
+  game: GameData;
 }
 
 const gamesById = async (
@@ -67,7 +68,24 @@ const gamesById = async (
       }
     `, {
       id
-    }).then(data => {
+    }).then((data: Data) => {
+      if (data.game.firstTeamPoints !== null && data.game.secondTeamPoints !== null) {
+        data.game.guesses.forEach(async (guess: Guess) => {
+          if (guess.firstTeamPoints === data.game.firstTeamPoints && guess.secondTeamPoints === data.game.secondTeamPoints) {
+            // Add score to the points variable
+            guess.points = 15;
+          } else if ((guess.firstTeamPoints > guess.secondTeamPoints && data.game.firstTeamPoints > data.game.secondTeamPoints) && guess.firstTeamPoints === data.game.firstTeamPoints) {
+            guess.points = 10;
+          } else if (guess.firstTeamPoints === guess.secondTeamPoints && data.game.firstTeamPoints === data.game.secondTeamPoints) {
+            guess.points = 8;
+          } else if ((guess.firstTeamPoints > guess.secondTeamPoints && data.game.firstTeamPoints > data.game.secondTeamPoints) || (guess.firstTeamPoints < guess.secondTeamPoints && data.game.firstTeamPoints < data.game.secondTeamPoints)) {
+            guess.points = 5;
+          } else {
+            guess.points = 0;
+          }
+        });
+      }
+
       res.status(200).json(data);
     });
   }

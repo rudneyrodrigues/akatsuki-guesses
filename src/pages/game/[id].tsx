@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import { Flex, Heading, Spinner, Text } from "@chakra-ui/react";
 import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
 
-import { Sidebar } from "../../components/Sidebar";
 import { useGetGameById } from "../../lib/useGetGameById";
 import { GameGuesses } from "../../components/Guesses/GameGuesses";
 
@@ -23,6 +22,7 @@ const Game: NextPage = (): JSX.Element => {
         justify="center"
         flexDir="column"
         gap="4"
+        flex={1}
       >
         <Heading>
           Erro ao carregar dados do servidor
@@ -36,7 +36,7 @@ const Game: NextPage = (): JSX.Element => {
 
   if (isLoading) {
     return (
-      <Flex minH="calc(100vh - 5rem)" align="center" justify="center">
+      <Flex flex={1} minH="calc(100vh - 5rem)" align="center" justify="center">
         <Spinner size="xl" color="yellow" />
       </Flex>
     )
@@ -48,11 +48,7 @@ const Game: NextPage = (): JSX.Element => {
         <title>{data.game.teams[0].title} x {data.game.teams[1].title} - Copa do Mundo 2022</title>
       </Head>
 
-      <Flex as="main" maxW="container.xl" mx="auto" minH="calc(100vh - 5rem)">
-        <GameGuesses game={data.game} />
-
-        <Sidebar />
-      </Flex>
+      <GameGuesses game={data.game} />
     </>
   )
 }
