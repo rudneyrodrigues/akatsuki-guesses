@@ -34,7 +34,7 @@ const users = async (
   if (req.method === 'GET') {
     await graphql.request(`
       query GetAllParticipants {
-        participants {
+        participants(first: 50) {
           id
           name
           email
@@ -53,15 +53,19 @@ const users = async (
       // Add score to the points variable
       data.participants.forEach(participant => {
         participant.guesses.forEach(guess => {
-          if (guess.firstTeamPoints === guess.game.firstTeamPoints && guess.secondTeamPoints === guess.game.secondTeamPoints) {
-            // Add score to the points variable
-            guess.points = 15;
-          } else if ((guess.firstTeamPoints > guess.secondTeamPoints && guess.game.firstTeamPoints > guess.game.secondTeamPoints) && guess.firstTeamPoints === guess.game.firstTeamPoints) {
-            guess.points = 10;
-          } else if (guess.firstTeamPoints === guess.secondTeamPoints && guess.game.firstTeamPoints === guess.game.secondTeamPoints) {
-            guess.points = 8;
-          } else if ((guess.firstTeamPoints > guess.secondTeamPoints && guess.game.firstTeamPoints > guess.game.secondTeamPoints) || (guess.firstTeamPoints < guess.secondTeamPoints && guess.game.firstTeamPoints < guess.game.secondTeamPoints)) {
-            guess.points = 5;
+          if (guess.game.firstTeamPoints !== null && guess.game.secondTeamPoints !== null) {
+            if (guess.firstTeamPoints === guess.game.firstTeamPoints && guess.secondTeamPoints === guess.game.secondTeamPoints) {
+              // Add score to the points variable
+              guess.points = 15;
+            } else if ((guess.firstTeamPoints > guess.secondTeamPoints && guess.game.firstTeamPoints > guess.game.secondTeamPoints) && guess.firstTeamPoints === guess.game.firstTeamPoints) {
+              guess.points = 10;
+            } else if (guess.firstTeamPoints === guess.secondTeamPoints && guess.game.firstTeamPoints === guess.game.secondTeamPoints) {
+              guess.points = 8;
+            } else if ((guess.firstTeamPoints > guess.secondTeamPoints && guess.game.firstTeamPoints > guess.game.secondTeamPoints) || (guess.firstTeamPoints < guess.secondTeamPoints && guess.game.firstTeamPoints < guess.game.secondTeamPoints)) {
+              guess.points = 5;
+            } else {
+              guess.points = 0;
+            }
           } else {
             guess.points = 0;
           }

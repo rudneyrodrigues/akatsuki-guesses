@@ -9,7 +9,7 @@ const Ranking: NextPage = (): JSX.Element => {
   const { data, isError, isLoading } = useGetAllParticipants();
 
   // Sort users by number of points
-  const sortedParticipants = data?.participants.sort((a, b) => {
+  data?.participants.sort((a, b) => {
     return b.guesses.reduce((acc, guess) => acc + guess.points, 0) - a.guesses.reduce((acc, guess) => acc + guess.points, 0);
   });
 
@@ -91,8 +91,8 @@ const Ranking: NextPage = (): JSX.Element => {
             <Tbody>
               { data.participants.map( participant => (
                 <Tr key={participant.id}>
-                  <Td>
-                    {participant.name}
+                  <Td textTransform="capitalize">
+                    {participant.name.toLocaleLowerCase()}
                   </Td>
                   <Td isNumeric>
                     {participant.guesses.length}
