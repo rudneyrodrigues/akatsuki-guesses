@@ -42,6 +42,34 @@ export const GameGuesses = ({ game }: GameGuessesProps): JSX.Element => {
     return isPast(date);
   };
 
+  if (!session) {
+    return (
+      <Flex
+        flex={1}
+        align="center"
+        justify="center"
+        p="8"
+        flexDir="column"
+        gap="2"
+      >
+        <Heading size="lg">
+          Faça login para continuar
+        </Heading>
+
+        <Text
+          textAlign="center"
+          fontSize="sm"
+          color="gray.700"
+          _dark={{
+            color: 'gray.300',
+          }}
+        >
+          Para visualizar os palpites feitos nos jogos, é necessário realizar o login na plataforma.
+        </Text>
+      </Flex>
+    )
+  }
+
   return (
     <VStack flex={1} w="full" spacing="8" p="8">
       <Grid
