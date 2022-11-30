@@ -38,7 +38,7 @@ const users = async (
           id
           name
           email
-          guesses {
+          guesses(first: 50) {
             id
             firstTeamPoints
             secondTeamPoints
