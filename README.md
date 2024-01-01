@@ -25,8 +25,7 @@
 - [ ] Página com pontuação geral de palpites
 - [ ] Visualizar perfil dos participantes do bolão
 
-## Contato
-
-Siga-me no Linkedin, estou sempre por lá.
-
-![Linkedin Badge](https://img.shields.io/badge/-Rudney%20Rodrigues-6633cc?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/rudney.rodrigues.3/)
+### Contate-me em:
+[![Linkedin](https://img.shields.io/badge/Linkedin-2867b2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/rudneyrodrigues/)
+[![Twitter](https://img.shields.io/badge/Instagram-DD2A7B?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/rudney.rodrigues.3/)
+[![E-mail](https://img.shields.io/badge/Email-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:contato@rudneyrodrigues.dev.br)
